@@ -55,8 +55,12 @@ public class ClubeService implements ValidarDados {
             return 404;
         }
         Optional<ClubeEntitie> clubeIgual = clubeRepository.findByNomeAndUf(clube.getNome(), clube.getUf());
-        if (clubeIgual.isPresent() && clubeIgualNomeEstado(clubeIgual.get(), id)) {
-            return 409;
+        if (clubeIgual.isPresent()) {
+            clubeIgualNomeEstado(clubeIgual.get(), id);
+            if (!clubeIgualNomeEstado(clubeIgual.get(), id)
+            ) {
+                return 409;
+            }
         }
         BeanUtils.copyProperties(clube, clubeExiste);
         clube.setId(id);
